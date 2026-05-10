@@ -70,6 +70,16 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
 
 class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        print("REQUEST DATA:", request.data)  # 打印收到的数据
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            print("ERRORS:", serializer.errors)  # 打印错误原因
+        serializer.is_valid(raise_exception=True)
+        return super().create(request, *args, **kwargs)
+
+
+

@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'piki_ora.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL_REACT = os.environ.get("DATABASE_URL_REACT")
 
-if DATABASE_URL:
+if DATABASE_URL_REACT:
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL)
+        'default': dj_database_url.parse(DATABASE_URL_REACT)
     }
 else:
     # 本地开发使用 SQLite

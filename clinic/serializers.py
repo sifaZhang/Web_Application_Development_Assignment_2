@@ -94,16 +94,20 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True, min_length=6)
 
     class Meta:
         model = User
         fields = ["id", "username", "email", "password"]
 
     def create(self, validated_data):
+        password = validated_data.pop("password")
         user = User.objects.create_user(
             username=validated_data["username"],
-            email=validated_data.get("email", ""),
-            password=validated_data["password"],
+            email=validated_data.get("email", "")
         )
+        user.set_password(password)
+        user.save()
+
+        PatientProfile.objects.create(user=user)
         return user
