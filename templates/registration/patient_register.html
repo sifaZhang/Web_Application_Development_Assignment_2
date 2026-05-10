@@ -1,0 +1,60 @@
+{%  extends 'registration/base_registration.html' %}
+{% block title %}
+    Patient Registration - Piki Ora Medical Centre
+{% endblock %}
+
+{% block content %}
+
+    <div class="container d-flex flex-column justify-content-center align-items-center"
+         style="min-height: 100vh;">
+
+        <div class="card shadow p-4" style="max-width: 450px; width: 100%;">
+            <h3 class="text-center text-secondary fw-bold mb-3">Patient Registration</h3>
+            <p class="text-center text-muted">Create your account to book appointments</p>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Phone</label>
+                    <input type="text" name="phone" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Birthday</label>
+                    <input type="date" name="birthday" class="form-control">
+                </div>
+
+                <button type="submit" class="btn btn-secondary w-100">Register</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <a href="/login/" class="text-decoration-none">Already have an account? Login</a>
+            </div>
+
+            <div class="text-center mt-2">
+                <a href="/" class="text-decoration-none">← Back to Home</a>
+            </div>
+        </div>
+
+        <footer class="mt-4 text-muted small">
+            © 2026 Piki Ora Medical Centre
+        </footer>
+    </div>
+
+{% endblock %}

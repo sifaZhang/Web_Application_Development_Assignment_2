@@ -1,0 +1,70 @@
+{% extends "clinic/base_clinic.html" %}
+
+{% block title %}Patient Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <h2 class="text-primary fw-bold mb-4">Welcome, {{ patient.username }}</h2>
+
+    <!-- Patient Info -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4>Your Profile</h4>
+            <p class="mb-0">
+                <strong>Email:</strong> {{ patient.email }}<br>
+                <strong>Username:</strong> {{ patient.username }}
+            </p>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
+        <h4 class="text-secondary mb-0">Your Appointments</h4>
+
+        <a href="{% url 'book_appointment' %}" class="btn btn-primary">
+            Book a New Appointment
+        </a>
+    </div>
+
+
+    {% if appointments %}
+        <table class="table table-bordered table-striped">
+            <thead class="table-primary">
+            <tr>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Booked At</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for a in appointments %}
+                <tr>
+                    <td>{{ a.slot.doctor.name }}</td>
+                    <td>{{ a.slot.date }}</td>
+                    <td>{{ a.slot.time }}</td>
+                    <td>{{ a.created_at|date:"Y-m-d H:i" }}</td>
+
+                    <td>
+                        <a href="{% url 'cancel_appointment' a.id %}"
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                            Cancel
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    {% else %}
+        <div class="alert alert-info">
+            You have no appointments yet.
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

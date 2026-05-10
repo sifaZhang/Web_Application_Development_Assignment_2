@@ -1,0 +1,27 @@
+
+{%  extends 'clinic/base_clinic.html' %}
+{% block title %}
+    Admin Dashboard
+{% endblock %}
+
+{% block content %}
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+
+        <h2 class="text-center mb-4 fw-bold text-success">Piki Ora Medical Centre</h2>
+
+        <div class="row g-4">
+
+            {% include 'clinic/components/card_admin.html' with title="Doctor Management" desc="View, add, edit, or remove doctor profiles." url="/doctors/" btn="Manage Doctors" %}
+
+            {% include 'clinic/components/card_admin.html' with title="Appointment Slots" desc="Create and manage available appointment times." url="/slots/" btn="Manage Slots" %}
+
+            {% include 'clinic/components/card_admin.html' with title="Patient Appointments" desc="View, edit, or cancel patient bookings." url="/appointments/" btn="Manage Appointments" %}
+
+            {% include 'clinic/components/card_admin.html' with title="Patient Accounts" desc="View and manage registered patient accounts." url="/patients/"  btn="Manage Patients" %}
+
+        </div>
+    </div>
+
+{% endblock %}
