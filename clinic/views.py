@@ -1,12 +1,15 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from django.contrib.auth.models import User
 
 from .models import DoctorProfile, AppointmentSlot, Appointment
 from .serializers import (
     DoctorSerializer,
     AppointmentSlotSerializer,
     AppointmentSerializer,
+    RegisterSerializer,
 )
 
 
@@ -64,3 +67,9 @@ class AppointmentViewSet(viewsets.ModelViewSet):
     # 创建预约时自动绑定 patient
     def perform_create(self, serializer):
         serializer.save(patient=self.request.user)
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
