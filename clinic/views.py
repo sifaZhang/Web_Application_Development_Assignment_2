@@ -1,8 +1,10 @@
-from rest_framework import viewsets, permissions, generics
+from django.contrib.auth import authenticate
+from rest_framework import viewsets, permissions, generics, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import DoctorProfile, AppointmentSlot, Appointment
 from .serializers import (
@@ -82,4 +84,19 @@ class RegisterView(generics.CreateAPIView):
         return super().create(request, *args, **kwargs)
 
 
+class LoginView(generics.GenericAPIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
 
+        user = authenticate(username=username, password=password)
+
+        if user is None:
+            return Response({"detail": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "access": str(refresh.access_token),
+            "refresh": str(refresh)
+        })
