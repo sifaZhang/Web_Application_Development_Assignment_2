@@ -46,12 +46,12 @@ class AppointmentSlotSerializer(serializers.ModelSerializer):
         ]
 
 
-# 预约记录
 class AppointmentSerializer(serializers.ModelSerializer):
     patient = UserSerializer(read_only=True)
     slot = AppointmentSlotSerializer(read_only=True)
+
     slot_id = serializers.PrimaryKeyRelatedField(
-        queryset=AppointmentSlot.objects.all(),
+        queryset=AppointmentSlot.objects.filter(is_booked=False),
         source="slot",
         write_only=True
     )
@@ -66,22 +66,24 @@ class AppointmentSerializer(serializers.ModelSerializer):
             "status",
             "created_at",
         ]
+        read_only_fields = ["patient", "created_at"]
 
-    # 防止重复预约（后端硬验证）
     def validate(self, data):
         slot = data["slot"]
         if slot.is_booked:
-            raise serializers.ValidationError("该时间段已被预约，请选择其他时间。")
+            raise serializers.ValidationError("This slot has been booked. Please choose another slot.")
         return data
 
-    # 创建预约时自动标记 slot.is_booked = True
     def create(self, validated_data):
+        request = self.context["request"]
+        validated_data["patient"] = request.user
+
         slot = validated_data["slot"]
         slot.is_booked = True
         slot.save()
 
-        appointment = Appointment.objects.create(**validated_data)
-        return appointment
+        return Appointment.objects.create(**validated_data)
+
 
 
 class RegisterSerializer(serializers.ModelSerializer):

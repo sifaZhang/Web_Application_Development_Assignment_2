@@ -54,24 +54,51 @@ class AppointmentViewSet(viewsets.ModelViewSet):
     serializer_class = AppointmentSerializer
 
     def get_permissions(self):
-        if self.action in ["update", "partial_update", "destroy"]:
-            return [IsOwnerOrAdmin()]
-        if self.action in ["create"]:
+        # 管理员可以查看所有预约
+        if self.action in ["list", "retrieve"]:
+            return [permissions.IsAdminUser()]
+        # 病人创建预约
+        if self.action == "create":
             return [permissions.IsAuthenticated()]
+        # 病人查看自己的预约
         if self.action == "my":
             return [permissions.IsAuthenticated()]
+        # 病人或管理员可以修改/取消预约
+        if self.action in ["update", "partial_update", "destroy"]:
+            return [IsOwnerOrAdmin()]
+
         return [permissions.IsAdminUser()]
 
-    # 病人查看自己的预约
     @action(detail=False, methods=["get"])
     def my(self, request):
         appointments = Appointment.objects.filter(patient=request.user)
-        serializer = AppointmentSerializer(appointments, many=True)
+        serializer = AppointmentSerializer(
+            appointments, many=True, context={"request": request}
+        )
         return Response(serializer.data)
 
-    # 创建预约时自动绑定 patient
-    def perform_create(self, serializer):
-        serializer.save(patient=self.request.user)
+    @action(detail=True, methods=["post"])
+    def cancel(self, request, pk=None):
+        appointment = self.get_object()
+
+        # 权限：只有本人或管理员可以取消
+        if not (request.user.is_staff or appointment.patient == request.user):
+            return Response({"detail": "You don't have permission to cancel this appointment"}, status=403)
+
+        # 如果已经取消
+        if appointment.status == "cancelled":
+            return Response({"detail": "This appointment has already been cancelled"}, status=400)
+
+        # 释放 slot
+        slot = appointment.slot
+        slot.is_booked = False
+        slot.save()
+
+        # 更新预约状态
+        appointment.status = "cancelled"
+        appointment.save()
+
+        return Response({"detail": "The appointment has cancelled successful"})
 
 
 class RegisterView(generics.CreateAPIView):
