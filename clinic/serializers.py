@@ -19,19 +19,10 @@ class PatientProfileSerializer(serializers.ModelSerializer):
         fields = ["id", "user", "phone", "birthday"]
 
 
-# 医生信息
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorProfile
-        fields = [
-            "id",
-            "name",
-            "specialty",
-            "description",
-            "phone",
-            "email",
-            "is_active",
-        ]
+        fields = ["id", "name", "specialty", "description", "phone", "email", "is_active"]
 
 
 # 时间段（slot）

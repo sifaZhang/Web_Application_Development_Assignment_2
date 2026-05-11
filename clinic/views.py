@@ -3,7 +3,6 @@ from rest_framework import viewsets, permissions, generics, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import DoctorProfile, AppointmentSlot, Appointment
@@ -14,15 +13,6 @@ from .serializers import (
     RegisterSerializer,
 )
 
-
-# 权限：病人只能操作自己的预约
-class IsOwnerOrAdmin(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.user.is_staff:
-            return True
-        return obj.patient == request.user
-
-
 # 医生管理
 class DoctorViewSet(viewsets.ModelViewSet):
     queryset = DoctorProfile.objects.all()
@@ -32,6 +22,19 @@ class DoctorViewSet(viewsets.ModelViewSet):
         if self.action in ["create", "update", "partial_update", "destroy"]:
             return [permissions.IsAdminUser()]
         return [permissions.AllowAny()]
+
+# for patient
+class DoctorListView(generics.ListAPIView):
+    queryset = DoctorProfile.objects.all()
+    serializer_class = DoctorSerializer
+
+
+# 权限：病人只能操作自己的预约
+class IsOwnerOrAdmin(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_staff:
+            return True
+        return obj.patient == request.user
 
 
 # 时间段管理
