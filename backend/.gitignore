@@ -2,3 +2,8 @@
 .idea/
 .env
 sendgrid.env
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd

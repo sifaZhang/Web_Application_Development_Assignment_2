@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./PatientRegister.css";
 
 export default function PatientRegister() {
@@ -21,15 +22,38 @@ export default function PatientRegister() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (form.password !== form.confirm_password) {
-      alert("Passwords do not match");
-      return;
-    }
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/auth/register/", {
+        username: form.username,
+        first_name: form.first_name,
+        last_name: form.last_name,
+        email: form.email,
+        phone: form.phone,
+        birthday: form.birthday,
+        gender: form.gender,
+        password: form.password,
+      });
 
-    alert("Registration clicked");
+      // 判断成功
+      if (response.status === 201) {
+        alert("Account created successfully!");
+        navigate("/patient-login");
+      }
+
+    } catch (error) {
+
+      // 判断失败
+      if (error.response) {
+        // 后端返回错误信息
+        alert(error.response.data.error || "Registration failed");
+      } else {
+        // 网络错误
+        alert("Network error");
+      }
+    }
   };
 
   return (
