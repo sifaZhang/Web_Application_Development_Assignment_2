@@ -1,0 +1,82 @@
+.patient-container {
+  height: 100vh;
+  background: #f0f6ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+.patient-card {
+  background: white;
+  width: 360px;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.patient-card h2 {
+  font-size: 26px;
+  color: #1a3d7c;
+  margin-bottom: 10px;
+}
+
+.patient-subtitle {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.patient-input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.patient-btn {
+  width: 100%;
+  padding: 12px;
+  background: #1e88e5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.patient-btn:hover {
+  opacity: 0.9;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 12px;
+  background: #757575;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.register-btn:hover {
+  opacity: 0.9;
+}
+
+.back-btn {
+  margin-top: 20px;
+  background: none;
+  border: none;
+  color: #1e88e5;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-btn:hover {
+  text-decoration: underline;
+}

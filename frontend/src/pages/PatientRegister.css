@@ -1,0 +1,98 @@
+.register-container {
+  min-height: 100vh;
+  background: #f0f6ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.register-card {
+  background: white;
+  width: 380px;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.register-card h2 {
+  font-size: 26px;
+  color: #1a3d7c;
+  margin-bottom: 10px;
+}
+
+.register-subtitle {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+/* ⭐ 关键：所有输入框统一放在 field 容器中 */
+.field {
+  width: 100%;
+  display: block;
+}
+
+.register-input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+/* 修复 date input */
+input[type="date"].register-input {
+  min-width: 0 !important;
+}
+
+/* 修复 select */
+select.register-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-color: white;
+  padding-right: 30px;
+
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 12px;
+  background: #1e88e5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #757575;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.back-btn {
+  margin-top: 20px;
+  background: none;
+  border: none;
+  color: #1e88e5;
+  cursor: pointer;
+  font-size: 14px;
+}
