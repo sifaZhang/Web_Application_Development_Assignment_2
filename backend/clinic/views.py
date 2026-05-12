@@ -105,13 +105,17 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
+    def options(self, request, *args, **kwargs):
+        return Response(status=200)
+
     def create(self, request, *args, **kwargs):
-        print("REQUEST DATA:", request.data)  # 打印收到的数据
+        print("REQUEST DATA:", request.data)
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
-            print("ERRORS:", serializer.errors)  # 打印错误原因
+            print("ERRORS:", serializer.errors)
         serializer.is_valid(raise_exception=True)
         return super().create(request, *args, **kwargs)
+
 
 
 class LoginView(generics.GenericAPIView):
