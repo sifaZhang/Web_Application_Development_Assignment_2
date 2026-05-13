@@ -6,10 +6,10 @@ class PatientProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=20, blank=True)
     birthday = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=10, blank=True)
 
     def __str__(self):
         return self.user.username
-
 
 # 医生信息
 class DoctorProfile(models.Model):

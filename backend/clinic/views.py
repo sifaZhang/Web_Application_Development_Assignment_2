@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
+from .models import PatientProfile
 
 from .models import DoctorProfile, AppointmentSlot, Appointment
 from .serializers import (
@@ -11,6 +12,7 @@ from .serializers import (
     AppointmentSlotSerializer,
     AppointmentSerializer,
     RegisterSerializer,
+    PatientProfileSerializer,
 )
 
 # 医生管理
@@ -101,20 +103,43 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         return Response({"detail": "The appointment has cancelled successful"})
 
 
+# clinic/views.py
+from django.contrib.auth.models import User
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework import status
+from .models import PatientProfile
+
 class RegisterView(generics.CreateAPIView):
-    serializer_class = RegisterSerializer
-    permission_classes = [AllowAny]
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        email = request.data.get("email")
+        first_name = request.data.get("first_name")
+        last_name = request.data.get("last_name")
+        phone = request.data.get("phone")
+        birthday = request.data.get("birthday")
+        gender = request.data.get("gender")
 
-    def options(self, request, *args, **kwargs):
-        return Response(status=200)
+        # 创建 User
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=email,
+            first_name=first_name,
+            last_name=last_name
+        )
 
-    def create(self, request, *args, **kwargs):
-        print("REQUEST DATA:", request.data)
-        serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid():
-            print("ERRORS:", serializer.errors)
-        serializer.is_valid(raise_exception=True)
-        return super().create(request, *args, **kwargs)
+        # 创建 PatientProfile
+        PatientProfile.objects.create(
+            user=user,
+            phone=phone,
+            birthday=birthday,
+            gender=gender
+        )
+
+        return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
+
 
 class LoginView(generics.GenericAPIView):
     def post(self, request):
@@ -135,3 +160,20 @@ class LoginView(generics.GenericAPIView):
             "is_staff": user.is_staff,
             "email": user.email,
         })
+
+class PatientViewSet(viewsets.ModelViewSet):
+    queryset = PatientProfile.objects.filter(user__is_staff=False)
+    serializer_class = PatientProfileSerializer
+
+    def get_permissions(self):
+        if self.action in ["destroy"]:
+            return [permissions.IsAdminUser()]
+        return [permissions.IsAuthenticated()]
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        user = instance.user
+        self.perform_destroy(instance)
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+

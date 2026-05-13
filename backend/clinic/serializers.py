@@ -7,17 +7,44 @@ from .models import PatientProfile, DoctorProfile, AppointmentSlot, Appointment
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "email"]
+        fields = [
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "date_joined",
+        ]
+        read_only_fields = [
+            "id",
+            "username",
+            "date_joined",
+        ]
 
-
-# 病人扩展信息
 class PatientProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    user = UserSerializer()
 
     class Meta:
         model = PatientProfile
-        fields = ["id", "user", "phone", "birthday"]
+        fields = [
+            "id",
+            "phone",
+            "gender",
+            "birthday",
+            "user",
+        ]
 
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop("user", None)
+
+        # 更新 user 信息
+        if user_data:
+            for attr, value in user_data.items():
+                setattr(instance.user, attr, value)
+            instance.user.save()
+
+        # 更新 patient 信息
+        return super().update(instance, validated_data)
 
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
