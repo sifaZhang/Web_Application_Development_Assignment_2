@@ -85,7 +85,7 @@ export default function AdminDoctors() {
   };
 
   return (
-    <>
+    <div className="admin-container">
       {/* 顶部导航条 */}
       <header className="doctor-header">
         <h1>Doctor Management</h1>
@@ -262,6 +262,6 @@ export default function AdminDoctors() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

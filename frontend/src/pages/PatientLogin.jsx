@@ -34,7 +34,7 @@ export default function PatientLogin() {
 
     return (
         <div className="patient-container">
-            <div className="patient-card">
+            <div className="patient-login-card">
                 <h2>Patient Login</h2>
                 <p className="patient-subtitle">Access your appointments and records</p>
 
@@ -61,11 +61,11 @@ export default function PatientLogin() {
                     </button>
                 </form>
 
-                <button className="register-btn" onClick={() => navigate("/register")}>
+                <button className="patient-register-btn" onClick={() => navigate("/register")}>
                     Create a Patient Account
                 </button>
 
-                <button className="back-btn" onClick={() => navigate("/")}>
+                <button className="patient-back-btn" onClick={() => navigate("/")}>
                     ← Back to Home
                 </button>
             </div>

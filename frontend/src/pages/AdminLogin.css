@@ -1,13 +1,13 @@
-.admin-container {
+.admin-login-container {
   height: 100vh;
-  background: #f5f9ff;
+  background-color: transparent; 
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: Arial, sans-serif;
 }
 
-.admin-card {
+.admin-login-card {
   background: white;
   width: 360px;
   padding: 35px;
@@ -16,18 +16,18 @@
   text-align: center;
 }
 
-.admin-card h2 {
+.admin-login-card h2 {
   font-size: 26px;
   color: #1a3d7c;
   margin-bottom: 10px;
 }
 
-.admin-subtitle {
+.admin-login-subtitle {
   color: #666;
   margin-bottom: 25px;
 }
 
-.admin-input {
+.admin-login-input {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
@@ -36,7 +36,7 @@
   font-size: 15px;
 }
 
-.admin-btn {
+.admin-login-btn {
   width: 100%;
   padding: 12px;
   background: #1e88e5;
@@ -48,11 +48,11 @@
   cursor: pointer;
 }
 
-.admin-btn:hover {
+.admin-login-btn:hover {
   opacity: 0.9;
 }
 
-.back-btn {
+.admin-login-back-btn {
   margin-top: 20px;
   background: none;
   border: none;
@@ -61,6 +61,6 @@
   font-size: 14px;
 }
 
-.back-btn:hover {
+.admin-login-back-btn:hover {
   text-decoration: underline;
 }

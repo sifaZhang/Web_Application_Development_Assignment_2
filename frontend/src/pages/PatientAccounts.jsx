@@ -66,7 +66,7 @@ export default function PatientAccounts() {
   };
 
   return (
-    <>
+    <div className="admin-container">
       {/* 顶部导航条 */}
       <header className="patient-header">
         <h1>Patient Accounts</h1>
@@ -87,7 +87,7 @@ export default function PatientAccounts() {
 
       {/* 页面主体 */}
       <div className="patient-page">
-        <div className="patient-card">
+        <div className="patient-account-card">
           <h2 className="patient-subtitle">Registered Patients</h2>
 
           {patients.length === 0 ? (
@@ -252,6 +252,6 @@ export default function PatientAccounts() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

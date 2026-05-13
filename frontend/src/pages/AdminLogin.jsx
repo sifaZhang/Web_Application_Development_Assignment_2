@@ -43,35 +43,37 @@ export default function AdminLogin() {
 
   return (
     <div className="admin-container">
-      <div className="admin-card">
-        <h2>Admin Login</h2>
-        <p className="admin-subtitle">Access the management dashboard</p>
+      <div className="admin-login-container">
+        <div className="admin-login-card">
+          <h2>Admin Login</h2>
+          <p className="admin-login-subtitle">Access the management dashboard</p>
 
-        <form onSubmit={handleLogin}>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="admin-input"
-          />
+          <form onSubmit={handleLogin}>
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="admin-login-input"
+            />
 
-          <input
-            type="password"
-            placeholder="Admin Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="admin-input"
-          />
+            <input
+              type="password"
+              placeholder="Admin Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="admin-login-input"
+            />
 
-          <button type="submit" className="admin-btn">
-            Login
+            <button type="submit" className="admin-login-btn">
+              Login
+            </button>
+          </form>
+
+          <button className="admin-login-back-btn" onClick={() => navigate("/")}>
+            ← Back to Home
           </button>
-        </form>
-
-        <button className="back-btn" onClick={() => navigate("/")}>
-          ← Back to Home
-        </button>
+        </div>
       </div>
     </div>
   );

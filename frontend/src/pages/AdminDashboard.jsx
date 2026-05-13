@@ -6,7 +6,7 @@ export default function AdminDashboard() {
   const username = localStorage.getItem("username") || "Admin";
 
   return (
-    <>
+    <div className="admin-container">
       {/* 全宽 Header - 在 container 外面 */}
       <header className="admin-header">
         <h1>Admin Dashboard</h1>
@@ -25,7 +25,7 @@ export default function AdminDashboard() {
       </header>
 
       {/* 页面内容居中 */}
-      <div className="admin-container">
+      <div className="admin-dashboard-container">
         <h2 className="dashboard-title">Piki Ora Medical Centre</h2>
 
         <div className="card-grid">
@@ -66,6 +66,6 @@ export default function AdminDashboard() {
           © 2026 Piki Ora Medical Centre
         </footer>
       </div>
-    </>
+    </div>
   );
 }

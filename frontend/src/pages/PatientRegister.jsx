@@ -174,7 +174,7 @@ export default function PatientRegister() {
           Already have an account? Login
         </button>
 
-        <button className="back-btn" onClick={() => navigate("/")}>
+        <button className="register-back-btn" onClick={() => navigate("/")}>
           ← Back to Home
         </button>
       </div>
