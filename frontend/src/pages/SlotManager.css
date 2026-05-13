@@ -1,0 +1,76 @@
+.slot-page {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.slot-card {
+  flex: 1;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+.slot-subtitle {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #1a3d7c;
+}
+
+.slot-select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 25px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.slot-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.slot-buttons button {
+  padding: 8px 14px;
+  border: none;
+  background: #1e88e5;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.slot-item {
+  background: #f5f9ff;
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.save-btn {
+  width: 100%;
+  padding: 12px;
+  background: #43a047;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.slot-section-title {
+  margin: 20px 0 10px;
+  font-size: 18px;
+  color: #1a3d7c;
+  font-weight: bold;
+}
