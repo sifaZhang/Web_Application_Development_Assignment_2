@@ -69,7 +69,7 @@ export default function PatientAccounts() {
     <div className="admin-container">
       {/* 顶部导航条 */}
       <header className="admin-header">
-        <h1>Patient Accounts</h1>
+        <h1><a href="/admin-dashboard">Admin Dashboard</a></h1>
 
         <div className="admin-user">
           <span>Logged in as: {username}</span>
@@ -86,6 +86,7 @@ export default function PatientAccounts() {
       </header>
 
       {/* 页面主体 */}
+      <h2 className="dashboard-title">Patient Accounts Management</h2>
       <div className="patient-page">
         <div className="patient-account-card">
           <h2 className="patient-subtitle">Registered Patients</h2>

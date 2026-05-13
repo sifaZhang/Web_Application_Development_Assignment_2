@@ -88,7 +88,7 @@ export default function AdminDoctors() {
     <div className="admin-container">
       {/* 顶部导航条 */}
       <header className="admin-header">
-        <h1>Doctor Management</h1>
+        <h1><a href="/admin-dashboard">Admin Dashboard</a></h1>
 
         <div className="admin-user">
           <span>Logged in as: {username}</span>
@@ -105,6 +105,7 @@ export default function AdminDoctors() {
       </header>
 
       {/* 页面主体 */}
+      <h2 className="dashboard-title">Doctors Management</h2>
       <div className="doctor-page">
 
         {/* 添加医生卡片 */}

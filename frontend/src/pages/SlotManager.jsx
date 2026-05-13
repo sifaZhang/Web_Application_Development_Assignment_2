@@ -151,7 +151,7 @@ export default function AdminSlots() {
         <div className="admin-container">
 
             <header className="admin-header">
-                <h1>Appointment Slot Management</h1>
+                <h1><a href="/admin-dashboard">Admin Dashboard</a></h1>
 
                 <div className="admin-user">
                     <span>Logged in as: {username}</span>
@@ -167,6 +167,7 @@ export default function AdminSlots() {
                 </div>
             </header>
 
+            <h2 className="dashboard-title">Appointment Slots Management</h2>
             <div className="slot-page">
 
                 <div className="slot-card">

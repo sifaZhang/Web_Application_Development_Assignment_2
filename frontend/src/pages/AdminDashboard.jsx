@@ -9,7 +9,7 @@ export default function AdminDashboard() {
     <div className="admin-container">
       {/* 全宽 Header - 在 container 外面 */}
       <header className="admin-header">
-        <h1>Admin Dashboard</h1>
+        <h1><a href="/admin-dashboard">Admin Dashboard</a></h1>
         <div className="admin-user">
           <span>Logged in as: {username}</span>
           <button

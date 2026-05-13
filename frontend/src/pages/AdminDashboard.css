@@ -9,10 +9,9 @@
   padding: 14px 40px;
 }
 
-.admin-header h1 {
+.admin-header a {
   color: white;
-  font-size: 20px;
-  font-weight: bold;
+  text-decoration: none;
 }
 
 .admin-user {
