@@ -116,8 +116,6 @@ class RegisterView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         return super().create(request, *args, **kwargs)
 
-
-
 class LoginView(generics.GenericAPIView):
     def post(self, request):
         username = request.data.get("username")
@@ -132,5 +130,8 @@ class LoginView(generics.GenericAPIView):
 
         return Response({
             "access": str(refresh.access_token),
-            "refresh": str(refresh)
+            "refresh": str(refresh),
+            "username": user.username,
+            "is_staff": user.is_staff,
+            "email": user.email,
         })
