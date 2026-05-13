@@ -248,6 +248,10 @@ export default function AdminSlots() {
                     )}
                 </div>
             </div>
+
+            <footer className="admin-footer">
+                © 2026 Piki Ora Medical Centre
+            </footer>
         </div>
     );
 }
