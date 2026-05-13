@@ -5,6 +5,7 @@ import Register from "./pages/PatientRegister";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import PatientDashboard from "./pages/PatientDashboard";
+import AdminDoctors from "./pages/AdminDoctors";
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/doctors" element={<AdminDoctors />} />
+
     </Routes>
   );
 }

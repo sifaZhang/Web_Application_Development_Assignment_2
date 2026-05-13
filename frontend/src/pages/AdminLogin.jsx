@@ -17,19 +17,18 @@ export default function AdminLogin() {
         password: password,
       });
 
-      // 判断后端是否返回 token
-      if (!response.data || !response.data.access) {
-        alert("Admin login failed");
+      // 判断是否管理员
+      if (!response.data.is_staff) {
+        alert("You are not an admin");
         return;
       }
 
       // 保存 token
       localStorage.setItem("admin_access", response.data.access);
       localStorage.setItem("admin_refresh", response.data.refresh);
+      localStorage.setItem("username", response.data.username);
+      localStorage.setItem("is_staff", response.data.is_staff);
 
-      //alert("Admin login successful");
-
-      // 跳转到 Admin Dashboard
       navigate("/admin-dashboard");
 
     } catch (error) {
@@ -40,6 +39,7 @@ export default function AdminLogin() {
       }
     }
   };
+
 
   return (
     <div className="admin-container">
