@@ -27,7 +27,7 @@ export default function AdminLogin() {
       localStorage.setItem("admin_access", response.data.access);
       localStorage.setItem("admin_refresh", response.data.refresh);
 
-      alert("Admin login successful");
+      //alert("Admin login successful");
 
       // 跳转到 Admin Dashboard
       navigate("/admin-dashboard");

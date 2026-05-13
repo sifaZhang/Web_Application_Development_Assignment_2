@@ -3,8 +3,8 @@ import Home from "./pages/Home";
 import Login from "./pages/PatientLogin";
 import Register from "./pages/PatientRegister";
 import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/Admin-Dashboard";
-import PatientDashboard from "./pages/Patient-Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import PatientDashboard from "./pages/PatientDashboard";
 
 function App() {
   return (
