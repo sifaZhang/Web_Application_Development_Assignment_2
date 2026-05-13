@@ -73,6 +73,7 @@ class AppointmentSlotSerializer(serializers.ModelSerializer):
         ]
 
 
+
 class AppointmentSerializer(serializers.ModelSerializer):
     patient = UserSerializer(read_only=True)
     slot = AppointmentSlotSerializer(read_only=True)

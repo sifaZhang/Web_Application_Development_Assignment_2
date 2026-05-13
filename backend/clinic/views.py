@@ -1,17 +1,15 @@
 from django.contrib.auth import authenticate
-from rest_framework import viewsets, permissions, generics, status
+from rest_framework import viewsets, permissions, generics
 from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import PatientProfile
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import DoctorProfile, AppointmentSlot, Appointment
 from .serializers import (
     DoctorSerializer,
     AppointmentSlotSerializer,
     AppointmentSerializer,
-    RegisterSerializer,
     PatientProfileSerializer,
 )
 
@@ -43,12 +41,38 @@ class IsOwnerOrAdmin(permissions.BasePermission):
 class AppointmentSlotViewSet(viewsets.ModelViewSet):
     queryset = AppointmentSlot.objects.all()
     serializer_class = AppointmentSlotSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["doctor", "date"]
 
     def get_permissions(self):
         if self.action in ["create", "update", "partial_update", "destroy"]:
             return [permissions.IsAdminUser()]
         return [permissions.AllowAny()]
 
+class AppointmentSlotBulkSave(APIView):
+    permission_classes = [permissions.IsAdminUser]
+
+    def post(self, request):
+        doctor_id = request.data.get("doctor_id")
+        date = request.data.get("date")
+        slots = request.data.get("slots", [])
+
+        if not doctor_id or not date:
+            return Response({"error": "doctor_id and date are required"}, status=400)
+
+        # 删除旧 slot
+        AppointmentSlot.objects.filter(doctor_id=doctor_id, date=date).delete()
+
+        # 创建新 slot
+        for t in slots:
+            AppointmentSlot.objects.create(
+                doctor_id=doctor_id,
+                date=date,
+                time=t,
+                is_booked=False
+            )
+
+        return Response({"status": "ok", "saved": len(slots)})
 
 # 预约管理
 class AppointmentViewSet(viewsets.ModelViewSet):

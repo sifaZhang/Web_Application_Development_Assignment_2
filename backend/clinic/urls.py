@@ -3,8 +3,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from clinic.views import DoctorViewSet, AppointmentSlotViewSet, AppointmentViewSet, LoginView, DoctorListView, \
-    PatientViewSet
-from clinic.views import RegisterView
+    PatientViewSet, AppointmentSlotBulkSave, RegisterView
 
 router = DefaultRouter()
 router.register(r"admin/doctors", DoctorViewSet, basename="admin-doctors")
@@ -21,4 +20,6 @@ urlpatterns = [
     path("auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 
     path("doctors/", DoctorListView.as_view(), name="doctor-list"),  # patient only
+
+    path("admin/slots/bulk_save/", AppointmentSlotBulkSave.as_view()),
 ]
