@@ -9,6 +9,7 @@ import PatientDashboard from "./pages/PatientDashboard";
 import AdminDoctors from "./pages/AdminDoctors";
 import PatientAccounts from "./pages/PatientAccounts";
 import SlotManager from "./pages/SlotManager";
+import AdminAppointments from "./pages/AdminAppointments";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/admin/doctors" element={<AdminDoctors />} />
       <Route path="/admin/patients" element={<PatientAccounts />} />
       <Route path="/admin/slots" element={<SlotManager />} />
+      <Route path="/admin/appointments" element={<AdminAppointments />} />
     </Routes>
   );
 }
