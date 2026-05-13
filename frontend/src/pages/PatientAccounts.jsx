@@ -68,10 +68,10 @@ export default function PatientAccounts() {
   return (
     <div className="admin-container">
       {/* 顶部导航条 */}
-      <header className="patient-header">
+      <header className="admin-header">
         <h1>Patient Accounts</h1>
 
-        <div className="patient-user">
+        <div className="admin-user">
           <span>Logged in as: {username}</span>
           <button
             className="logout-btn"

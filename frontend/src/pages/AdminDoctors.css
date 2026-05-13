@@ -1,40 +1,4 @@
 /* HEADER */
-.doctor-header {
-  width: 100%;
-  background: linear-gradient(90deg, #2d6a4f, #40916c);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 40px;
-  color: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-}
-
-.doctor-header h1 {
-  font-size: 22px;
-  font-weight: 600;
-}
-
-.doctor-user {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-size: 15px;
-}
-
-.logout-btn {
-  background-color: rgba(255,255,255,0.15);
-  color: white;
-  border: none;
-  padding: 6px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.logout-btn:hover {
-  background-color: rgba(255,255,255,0.25);
-}
 
 /* PAGE */
 .doctor-page {

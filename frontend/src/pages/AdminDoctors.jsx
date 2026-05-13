@@ -87,10 +87,10 @@ export default function AdminDoctors() {
   return (
     <div className="admin-container">
       {/* 顶部导航条 */}
-      <header className="doctor-header">
+      <header className="admin-header">
         <h1>Doctor Management</h1>
 
-        <div className="doctor-user">
+        <div className="admin-user">
           <span>Logged in as: {username}</span>
           <button
             className="logout-btn"
