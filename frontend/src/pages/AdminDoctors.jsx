@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./AdminDoctors.css";
 
@@ -12,7 +13,11 @@ export default function AdminDoctors() {
     description: "",
   });
 
-  // 获取医生列表
+  const [editingDoctor, setEditingDoctor] = useState(null); // 当前正在编辑的医生
+
+  const navigate = useNavigate();
+  const username = localStorage.getItem("username") || "Admin";
+
   const fetchDoctors = async () => {
     try {
       const response = await axios.get("/admin/doctors/");
@@ -26,7 +31,6 @@ export default function AdminDoctors() {
     fetchDoctors();
   }, []);
 
-  // 添加医生
   const handleAddDoctor = async (e) => {
     e.preventDefault();
 
@@ -50,7 +54,6 @@ export default function AdminDoctors() {
     }
   };
 
-  // 删除医生
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this doctor")) return;
 
@@ -63,96 +66,202 @@ export default function AdminDoctors() {
     }
   };
 
+  // 打开编辑弹窗
+  const openEditModal = (doc) => {
+    setEditingDoctor(doc);
+  };
+
+  // 保存编辑
+  const handleSaveEdit = async () => {
+    try {
+      await axios.put(`/admin/doctors/${editingDoctor.id}/`, editingDoctor);
+      //alert("Doctor updated!");
+      setEditingDoctor(null);
+      fetchDoctors();
+    } catch (error) {
+      console.log("Error updating doctor:", error);
+      alert("Only admin can edit doctors");
+    }
+  };
+
   return (
-    <div className="doctor-container">
-      <h1>Doctor Management</h1>
+    <>
+      {/* 顶部导航条 */}
+      <header className="doctor-header">
+        <h1>Doctor Management</h1>
 
-      {/* 添加医生表单 */}
-      <div className="doctor-form">
-        <h2>Add New Doctor</h2>
+        <div className="doctor-user">
+          <span>Logged in as: {username}</span>
+          <button
+            className="logout-btn"
+            onClick={() => {
+              localStorage.clear();
+              navigate("/admin-login");
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      </header>
 
-        <form onSubmit={handleAddDoctor}>
-          <input
-            type="text"
-            placeholder="Name"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            required
-          />
+      {/* 页面主体 */}
+      <div className="doctor-page">
 
-          <input
-            type="text"
-            placeholder="Specialty"
-            value={form.specialty}
-            onChange={(e) => setForm({ ...form, specialty: e.target.value })}
-            required
-          />
+        {/* 添加医生卡片 */}
+        <div className="doctor-card">
+          <h2 className="doctor-subtitle">Add New Doctor</h2>
 
-          <input
-            type="text"
-            placeholder="Phone"
-            value={form.phone}
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
-          />
+          <form className="doctor-form" onSubmit={handleAddDoctor}>
+            <input
+              type="text"
+              placeholder="Name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              required
+            />
 
-          <input
-            type="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-          />
+            <input
+              type="text"
+              placeholder="Specialty"
+              value={form.specialty}
+              onChange={(e) => setForm({ ...form, specialty: e.target.value })}
+              required
+            />
 
-          <textarea
-            placeholder="Description"
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
-          />
+            <input
+              type="text"
+              placeholder="Phone"
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            />
 
-          <button type="submit">Add Doctor</button>
-        </form>
-      </div>
+            <input
+              type="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+            />
 
-      {/* 医生列表（表格） */}
-      <div className="doctor-list">
-        <h2>Doctor List</h2>
+            <textarea
+              placeholder="Description"
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+            />
 
-        {doctors.length === 0 ? (
-          <p>No doctors found.</p>
-        ) : (
-          <table className="doctor-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Specialty</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Description</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+            <button type="submit" className="add-btn">Add Doctor</button>
+          </form>
+        </div>
 
-            <tbody>
-              {doctors.map((doc) => (
-                <tr key={doc.id}>
-                  <td>{doc.name}</td>
-                  <td>{doc.specialty}</td>
-                  <td>{doc.phone}</td>
-                  <td>{doc.email}</td>
-                  <td>{doc.description}</td>
-                  <td>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDelete(doc.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
+        {/* 医生列表卡片 */}
+        <div className="doctor-card">
+          <h2 className="doctor-subtitle">Doctor List</h2>
+
+          {doctors.length === 0 ? (
+            <p className="empty-text">No doctors found.</p>
+          ) : (
+            <table className="doctor-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Specialty</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Description</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+
+              <tbody>
+                {doctors.map((doc) => (
+                  <tr key={doc.id}>
+                    <td>{doc.name}</td>
+                    <td>{doc.specialty}</td>
+                    <td>{doc.phone}</td>
+                    <td>{doc.email}</td>
+                    <td>{doc.description}</td>
+                    <td>
+                      <button
+                        className="edit-btn"
+                        onClick={() => openEditModal(doc)}
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDelete(doc.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+
       </div>
-    </div>
+
+      {/* 编辑弹窗 */}
+      {editingDoctor && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Edit Doctor</h2>
+
+            <input
+              type="text"
+              value={editingDoctor.name}
+              onChange={(e) =>
+                setEditingDoctor({ ...editingDoctor, name: e.target.value })
+              }
+            />
+
+            <input
+              type="text"
+              value={editingDoctor.specialty}
+              onChange={(e) =>
+                setEditingDoctor({ ...editingDoctor, specialty: e.target.value })
+              }
+            />
+
+            <input
+              type="text"
+              value={editingDoctor.phone}
+              onChange={(e) =>
+                setEditingDoctor({ ...editingDoctor, phone: e.target.value })
+              }
+            />
+
+            <input
+              type="email"
+              value={editingDoctor.email}
+              onChange={(e) =>
+                setEditingDoctor({ ...editingDoctor, email: e.target.value })
+              }
+            />
+
+            <textarea
+              value={editingDoctor.description}
+              onChange={(e) =>
+                setEditingDoctor({
+                  ...editingDoctor,
+                  description: e.target.value,
+                })
+              }
+            />
+
+            <div className="modal-buttons">
+              <button className="save-btn" onClick={handleSaveEdit}>
+                Save
+              </button>
+              <button className="cancel-btn" onClick={() => setEditingDoctor(null)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

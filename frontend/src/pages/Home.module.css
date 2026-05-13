@@ -1,9 +1,9 @@
-.home-container {
+.homeContainer {
   text-align: center;
   padding-top: 60px;
   font-family: Arial, sans-serif;
   background: #f5f9ff;
-  height: 100vh;
+  min-height: 100vh; /* 不要用 height: 100vh */
 }
 
 .title {
@@ -18,18 +18,13 @@
   margin-bottom: 40px;
 }
 
-.login-card {
+.loginCard {
   background: white;
   width: 350px;
   margin: 0 auto;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.login-card h2 {
-  margin-bottom: 20px;
-  color: #333;
 }
 
 .btn {
@@ -43,15 +38,15 @@
   color: white;
 }
 
-.btn.patient {
+.patient {
   background: #1e88e5;
 }
 
-.btn.register {
+.register {
   background: #757575;
 }
 
-.btn.admin {
+.admin {
   background: #43a047;
 }
 

@@ -1,3 +1,4 @@
+import "./api/axiosConfig";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/PatientLogin";
@@ -6,6 +7,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import PatientDashboard from "./pages/PatientDashboard";
 import AdminDoctors from "./pages/AdminDoctors";
+import PatientAccounts from "./pages/PatientAccounts";
 
 function App() {
   return (
@@ -17,7 +19,7 @@ function App() {
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/admin/doctors" element={<AdminDoctors />} />
-
+      <Route path="/admin/patients" element={<PatientAccounts />} />
     </Routes>
   );
 }
