@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import patientAxios from "../api/patientAxios";
-
-const [searchParams] = useSearchParams();
-const editId = searchParams.get("edit"); 
-
 import "./PatientDashboard.css";
 
 export default function BookAppointment() {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const editId = searchParams.get("edit"); 
     const token = localStorage.getItem("access");
     const username = localStorage.getItem("username");
 
