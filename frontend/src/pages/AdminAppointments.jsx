@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import adminAxios from "../api/adminAxios";
-import "./AdminAppointments.css"; // you can reuse AdminDoctors.css if you want
+import "./AdminAppointments.css";
 
 export default function AdminAppointments() {
     const navigate = useNavigate();
@@ -16,9 +16,14 @@ export default function AdminAppointments() {
         date: "",
     });
 
+    const [editingId, setEditingId] = useState(null);
+    const [editDoctor, setEditDoctor] = useState("");
+    const [editDate, setEditDate] = useState("");
+    const [editSlots, setEditSlots] = useState([]);
+    const [loadingEditSlots, setLoadingEditSlots] = useState(false);
+
     const token = localStorage.getItem("admin_access");
 
-    // Load doctors for filter dropdown
     const loadDoctors = async () => {
         try {
             const res = await adminAxios.get("/manage/doctors/", {
@@ -30,7 +35,6 @@ export default function AdminAppointments() {
         }
     };
 
-    // Load all appointments
     const loadAppointments = async () => {
         try {
             const res = await adminAxios.get("/appointments/", {
@@ -47,44 +51,65 @@ export default function AdminAppointments() {
         loadAppointments();
     }, []);
 
-    // Delete appointment
     const deleteAppointment = async (id) => {
         if (!window.confirm("Are you sure you want to delete this appointment")) return;
-
         try {
             await adminAxios.delete(`/appointments/${id}/`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-
             loadAppointments();
         } catch (err) {
             alert("Failed to delete appointment");
         }
     };
 
-    // Filter logic
+    const loadEditSlots = async () => {
+        if (!editDoctor || !editDate) {
+            alert("Please select doctor and date");
+            return;
+        }
+        setLoadingEditSlots(true);
+        try {
+            const res = await adminAxios.get(`/slots/?doctor=${editDoctor}&date=${editDate}`);
+            setEditSlots(res.data.filter(s => !s.is_booked));
+        } catch (err) {
+            alert("Failed to load slots");
+        }
+        setLoadingEditSlots(false);
+    };
+
+    const updateAppointment = async (slotId) => {
+        if (!window.confirm("Confirm reschedule?")) return;
+        try {
+            await adminAxios.patch(`/appointments/${editingId}/`, { slot_id: slotId });
+            alert("Appointment updated!");
+            setEditingId(null);
+            setEditDoctor("");
+            setEditDate("");
+            setEditSlots([]);
+            loadAppointments();
+        } catch (err) {
+            alert("Failed to update appointment");
+        }
+    };
+
     const filtered = appointments.filter((a) => {
         const p = filters.patient.toLowerCase();
         const patientMatch = a.patient.username.toLowerCase().includes(p);
-
         const doctorMatch = filters.doctor
             ? a.slot.doctor.id === Number(filters.doctor)
             : true;
-
         const dateMatch = filters.date
             ? a.slot.date === filters.date
             : true;
-
         return patientMatch && doctorMatch && dateMatch;
     });
 
     return (
         <div className="admin-container">
 
-            {/* HEADER */}
             <header className="admin-header">
                 <h1><a href="/admin-dashboard">Admin Dashboard</a></h1>
-
                 <div className="admin-user">
                     <span>Logged in as: {username}</span>
                     <button
@@ -103,53 +128,38 @@ export default function AdminAppointments() {
 
             <div className="doctor-page">
 
-                {/* FILTER CARD */}
                 <div className="doctor-card">
                     <h2 className="doctor-subtitle">Filter Appointments</h2>
-
                     <div className="doctor-form">
                         <input
                             type="text"
                             placeholder="Patient Username"
                             value={filters.patient}
-                            onChange={(e) =>
-                                setFilters({ ...filters, patient: e.target.value })
-                            }
+                            onChange={(e) => setFilters({ ...filters, patient: e.target.value })}
                         />
-
                         <select
                             className="appointment-doctor-select"
                             value={filters.doctor}
-                            onChange={(e) =>
-                                setFilters({ ...filters, doctor: e.target.value })
-                            }
+                            onChange={(e) => setFilters({ ...filters, doctor: e.target.value })}
                         >
                             <option value="">All Doctors</option>
                             {doctors.map((d) => (
-                                <option key={d.id} value={d.id}>
-                                    {d.name}
-                                </option>
+                                <option key={d.id} value={d.id}>{d.name}</option>
                             ))}
                         </select>
-
                         <input
                             type="date"
                             value={filters.date}
-                            onChange={(e) =>
-                                setFilters({ ...filters, date: e.target.value })
-                            }
+                            onChange={(e) => setFilters({ ...filters, date: e.target.value })}
                         />
-
                         <button className="add-btn" onClick={loadAppointments}>
                             Apply Filters
                         </button>
                     </div>
                 </div>
 
-                {/* APPOINTMENT LIST */}
                 <div className="doctor-card">
                     <h2 className="doctor-subtitle">Appointment List</h2>
-
                     {filtered.length === 0 ? (
                         <p className="empty-text">No appointments found.</p>
                     ) : (
@@ -164,7 +174,6 @@ export default function AdminAppointments() {
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 {filtered.map((a) => (
                                     <tr key={a.id}>
@@ -174,6 +183,17 @@ export default function AdminAppointments() {
                                         <td>{a.slot.time.slice(0, 5)}</td>
                                         <td>{a.status}</td>
                                         <td>
+                                            <button
+                                                className="edit-btn"
+                                                onClick={() => {
+                                                    setEditingId(a.id);
+                                                    setEditDoctor("");
+                                                    setEditDate("");
+                                                    setEditSlots([]);
+                                                }}
+                                            >
+                                                Edit
+                                            </button>
                                             <button
                                                 className="delete-btn"
                                                 onClick={() => deleteAppointment(a.id)}
@@ -192,6 +212,54 @@ export default function AdminAppointments() {
                     © 2026 Piki Ora Medical Centre
                 </footer>
             </div>
+
+            {editingId && (
+                <div className="modal-overlay-appointment-doctor" onClick={() => setEditingId(null)}>
+                    <div className="modal-box-appointment-doctor" onClick={(e) => e.stopPropagation()}>
+                        <h3>Reschedule Appointment</h3>
+
+                        <select
+                            className="slot-input"
+                            value={editDoctor}
+                            onChange={(e) => setEditDoctor(e.target.value)}
+                        >
+                            <option value="">-- Select Doctor --</option>
+                            {doctors.map((d) => (
+                                <option key={d.id} value={d.id}>{d.name}</option>
+                            ))}
+                        </select>
+
+                        <input
+                            type="date"
+                            className="slot-input"
+                            value={editDate}
+                            onChange={(e) => setEditDate(e.target.value)}
+                        />
+
+                        <button className="edit-btn" onClick={loadEditSlots}>
+                            Show Available Slots
+                        </button>
+
+                        {loadingEditSlots && <p>Loading...</p>}
+
+                        <div className="slot-grid">
+                            {editSlots.map((s) => (
+                                <button
+                                    key={s.id}
+                                    className="slot-button"
+                                    onClick={() => updateAppointment(s.id)}
+                                >
+                                    {s.time.slice(0, 5)}
+                                </button>
+                            ))}
+                        </div>
+
+                        <button className="delete-btn" onClick={() => setEditingId(null)}>
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
