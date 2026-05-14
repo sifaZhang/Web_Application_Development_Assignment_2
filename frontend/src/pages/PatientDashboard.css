@@ -1,0 +1,74 @@
+/* Booking page improvements */
+.slot-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.slot-label {
+  font-weight: 600;
+  color: #2d6a4f;
+}
+
+.slot-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.slot-btn {
+  margin-top: 10px;
+  width: 100%;
+}
+
+/* Slot grid */
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.slot-button {
+  background: #2d6a4f;
+  color: white;
+  padding: 12px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.slot-button:hover {
+  background: #1b4332;
+}
+
+
+.small-btn {
+    padding: 6px 14px;
+    font-size: 14px;
+    border-radius: 6px;
+    margin-left: 12px;
+}
+
+.appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px; 
+}
+
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 两列 */
+    gap: 12px 40px; /* 行间距12px，列间距40px */
+    padding: 10px 0;
+}
+
+.profile-grid p {
+    margin: 6px 0;
+    font-size: 15px;
+}

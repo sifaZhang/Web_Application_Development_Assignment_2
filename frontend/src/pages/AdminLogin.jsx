@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import adminAxios from "../api/adminAxios";
 import "./AdminLogin.css";
 
 export default function AdminLogin() {
@@ -12,7 +12,7 @@ export default function AdminLogin() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/auth/login/", {
+      const response = await adminAxios.post("/auth/login/", {
         username: username,
         password: password,
       });

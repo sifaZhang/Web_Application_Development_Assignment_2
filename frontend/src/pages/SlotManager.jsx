@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import adminAxios from "../api/adminAxios";
 import { useNavigate } from "react-router-dom";
 import "./SlotManager.css";
 
@@ -43,7 +43,7 @@ export default function AdminSlots() {
     useEffect(() => {
         const token = localStorage.getItem("admin_access");
 
-        axios.get("http://127.0.0.1:8000/api/admin/doctors/", {
+        adminAxios.get("/admin/doctors/", {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(res => setDoctors(res.data))
@@ -60,8 +60,8 @@ export default function AdminSlots() {
 
         const token = localStorage.getItem("admin_access");
 
-        axios
-            .get(`http://127.0.0.1:8000/api/slots/?doctor=${selectedDoctor}&date=${selectedDate}`, {
+        adminAxios
+            .get(`/slots/?doctor=${selectedDoctor}&date=${selectedDate}`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             .then((res) => {
@@ -132,7 +132,7 @@ export default function AdminSlots() {
         ];
 
         try {
-            await axios.post("http://127.0.0.1:8000/api/admin/slots/bulk_save/", {
+            await adminAxios.post("/admin/slots/bulk_save/", {
                 doctor_id: selectedDoctor,
                 date: selectedDate,
                 slots: selectedTimes,
@@ -241,7 +241,7 @@ export default function AdminSlots() {
                                 ))}
                             </div>
 
-                            <button className="save-btn" onClick={saveSlots}>
+                            <button className="slot-save-btn" onClick={saveSlots}>
                                 Save Slots
                             </button>
                         </>

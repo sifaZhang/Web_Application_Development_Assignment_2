@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import patientAxios from "../api/patientAxios";
 import "./PatientRegister.css";
 
 export default function PatientRegister() {
@@ -26,7 +26,7 @@ export default function PatientRegister() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/auth/register/", {
+      const response = await patientAxios.post("/auth/register/", {
         username: form.username,
         first_name: form.first_name,
         last_name: form.last_name,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import adminAxios from "../api/adminAxios";
 import "./AdminDoctors.css";
 
 export default function AdminDoctors() {
@@ -20,7 +20,7 @@ export default function AdminDoctors() {
 
     const fetchDoctors = async () => {
         try {
-            const response = await axios.get("/admin/doctors/");
+            const response = await adminAxios.get("/admin/doctors/");
             setDoctors(response.data);
         } catch (error) {
             console.log("Error fetching doctors:", error);
@@ -35,7 +35,7 @@ export default function AdminDoctors() {
         e.preventDefault();
 
         try {
-            await axios.post("/admin/doctors/", form);
+            await adminAxios.post("/admin/doctors/", form);
 
             alert("Doctor added!");
 
@@ -58,7 +58,7 @@ export default function AdminDoctors() {
         if (!window.confirm("Are you sure you want to delete this doctor")) return;
 
         try {
-            await axios.delete(`/admin/doctors/${id}/`);
+            await adminAxios.delete(`/admin/doctors/${id}/`);
             fetchDoctors();
         } catch (error) {
             console.log("Error deleting doctor:", error);
@@ -74,7 +74,7 @@ export default function AdminDoctors() {
     // 保存编辑
     const handleSaveEdit = async () => {
         try {
-            await axios.put(`/admin/doctors/${editingDoctor.id}/`, editingDoctor);
+            await adminAxios.put(`/admin/doctors/${editingDoctor.id}/`, editingDoctor);
             //alert("Doctor updated!");
             setEditingDoctor(null);
             fetchDoctors();
@@ -201,7 +201,7 @@ export default function AdminDoctors() {
                         </table>
                     )}
                 </div>
-                
+
                 <footer className="admin-footer">
                     © 2026 Piki Ora Medical Centre
                 </footer>

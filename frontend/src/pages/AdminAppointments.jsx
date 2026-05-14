@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import adminAxios from "../api/adminAxios";
 import "./AdminAppointments.css"; // you can reuse AdminDoctors.css if you want
 
 export default function AdminAppointments() {
@@ -21,7 +21,7 @@ export default function AdminAppointments() {
     // Load doctors for filter dropdown
     const loadDoctors = async () => {
         try {
-            const res = await axios.get("/admin/doctors/", {
+            const res = await adminAxios.get("/admin/doctors/", {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setDoctors(res.data);
@@ -33,7 +33,7 @@ export default function AdminAppointments() {
     // Load all appointments
     const loadAppointments = async () => {
         try {
-            const res = await axios.get("/appointments/", {
+            const res = await adminAxios.get("/appointments/", {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setAppointments(res.data);
@@ -52,7 +52,7 @@ export default function AdminAppointments() {
         if (!window.confirm("Are you sure you want to delete this appointment")) return;
 
         try {
-            await axios.delete(`/appointments/${id}/`, {
+            await adminAxios.delete(`/appointments/${id}/`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 

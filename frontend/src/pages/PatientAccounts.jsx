@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import adminAxios from "../api/adminAxios";
 import "./PatientAccounts.css";
 
 export default function PatientAccounts() {
@@ -11,7 +11,7 @@ export default function PatientAccounts() {
 
     const fetchPatients = async () => {
         try {
-            const response = await axios.get("/patients/");
+            const response = await adminAxios.get("/patients/");
             setPatients(response.data);
         } catch (error) {
             console.log("Error fetching patients:", error);
@@ -26,7 +26,7 @@ export default function PatientAccounts() {
         if (!window.confirm("Are you sure you want to delete this patient account")) return;
 
         try {
-            await axios.delete(`/patients/${id}/`);
+            await adminAxios.delete(`/patients/${id}/`);
             fetchPatients();
         } catch (error) {
             console.log("Error deleting patient:", error);
@@ -45,7 +45,7 @@ export default function PatientAccounts() {
     // 保存编辑（完全匹配你的后端 nested serializer）
     const handleSaveEdit = async () => {
         try {
-            await axios.put(`/patients/${editingPatient.id}/`, {
+            await adminAxios.put(`/patients/${editingPatient.id}/`, {
                 phone: editingPatient.phone,
                 gender: editingPatient.gender,
                 birthday: editingPatient.birthday,

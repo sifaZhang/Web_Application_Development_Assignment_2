@@ -1,4 +1,3 @@
-import "./api/axiosConfig";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/PatientLogin";
@@ -10,6 +9,7 @@ import AdminDoctors from "./pages/AdminDoctors";
 import PatientAccounts from "./pages/PatientAccounts";
 import SlotManager from "./pages/SlotManager";
 import AdminAppointments from "./pages/AdminAppointments";
+import BookAppointment from "./pages/Booking";
 
 function App() {
   return (
@@ -17,6 +17,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/patient-login" element={<Login />} />
       <Route path="/patient-dashboard" element={<PatientDashboard />} />
+      <Route path="/booking" element={<BookAppointment />} />
       <Route path="/register" element={<Register />} />
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
@@ -24,6 +25,8 @@ function App() {
       <Route path="/admin/patients" element={<PatientAccounts />} />
       <Route path="/admin/slots" element={<SlotManager />} />
       <Route path="/admin/appointments" element={<AdminAppointments />} />
+      <Route path="*" element={"Page not found"} />
+    
     </Routes>
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import patientAxios from "../api/patientAxios";
 import "./PatientDashboard.css";
 
 export default function PatientDashboard() {
@@ -15,7 +15,7 @@ export default function PatientDashboard() {
     // 获取 profile
     const loadProfile = async () => {
         try {
-            const res = await axios.get(`/patients/by_user/${userId}/`, {
+            const res = await patientAxios.get(`/patients/by_user/${userId}/`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setProfile(res.data);
@@ -27,7 +27,7 @@ export default function PatientDashboard() {
     // 获取预约
     const loadAppointments = async () => {
         try {
-            const res = await axios.get("/appointments/my/", {
+            const res = await patientAxios.get("/appointments/my/", {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setAppointments(res.data);
@@ -57,7 +57,7 @@ export default function PatientDashboard() {
         if (!window.confirm("Are you sure you want to cancel this appointment")) return;
 
         try {
-            await axios.post(`/appointments/${id}/cancel/`, {}, {
+            await patientAxios.post(`/appointments/${id}/cancel/`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -97,15 +97,22 @@ export default function PatientDashboard() {
                     <h2 className="doctor-subtitle">Your Profile</h2>
 
                     {profile ? (
-                        <div className="profile-box">
-                            <p><strong>FirstName:</strong> {profile.user.first_name}</p>
-                            <p><strong>LastName:</strong> {profile.user.last_name}</p>
-                            <p><strong>Email:</strong> {profile.user.email}</p>
-                            <p><strong>Username:</strong> {profile.user.username}</p>
-                            <p><strong>Phone:</strong> {profile.phone}</p>
-                            <p><strong>Gender:</strong> {profile.gender}</p>
-                            <p><strong>Birthday:</strong> {profile.birthday}</p>
+                        <div className="profile-grid">
+                            <div>
+                                <p><strong>First Name:</strong> {profile.user.first_name}</p>
+                                <p><strong>Last Name:</strong> {profile.user.last_name}</p>
+                                <p><strong>Email:</strong> {profile.user.email}</p>
+                                <p><strong>Username:</strong> {profile.user.username}</p>
+                            </div>
+
+                            <div>
+                                <p><strong>Phone:</strong> {profile.phone}</p>
+                                <p><strong>Gender:</strong> {profile.gender}</p>
+                                <p><strong>Birthday:</strong> {profile.birthday}</p>
+                                <p><strong>Registered at:</strong> {profile.user.date_joined.slice(0, 16).replace("T", " ")}</p>
+                            </div>
                         </div>
+
                     ) : (
                         <p className="empty-text">Loading profile...</p>
                     )}
@@ -113,16 +120,17 @@ export default function PatientDashboard() {
 
                 {/* APPOINTMENTS */}
                 <div className="doctor-card">
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <div className="appointment-header">
                         <h2 className="doctor-subtitle">Your Appointments</h2>
 
                         <button
-                            className="edit-btn"
-                            onClick={() => navigate("/book")}
+                            className="edit-btn small-btn"
+                            onClick={() => navigate("/booking")}
                         >
-                            Book a New Appointment
+                            Book Appointment
                         </button>
                     </div>
+
 
                     {appointments.length === 0 ? (
                         <p className="empty-text">You have no appointments.</p>

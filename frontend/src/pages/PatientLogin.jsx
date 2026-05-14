@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import patientAxios from "../api/patientAxios";
 import "./PatientLogin.css";
 
 export default function PatientLogin() {
@@ -12,9 +12,9 @@ export default function PatientLogin() {
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://127.0.0.1:8000/api/auth/login/", {
-                username: username,
-                password: password,
+            const response = await patientAxios.post("/auth/login/", {
+                username,
+                password,
             });
 
             if (!response.data || !response.data.access) {
