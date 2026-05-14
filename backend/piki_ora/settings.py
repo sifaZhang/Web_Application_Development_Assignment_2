@@ -15,6 +15,10 @@ from dotenv import load_dotenv
 import os
 import dj_database_url
 
+#sendgrid
+load_dotenv()  # 加载 .env
+load_dotenv('sendgrid.env')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -139,9 +143,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-#sendgrid
-load_dotenv('sendgrid.env')
 
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
