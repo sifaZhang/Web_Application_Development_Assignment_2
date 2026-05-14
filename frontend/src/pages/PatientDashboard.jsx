@@ -171,12 +171,20 @@ export default function PatientDashboard() {
 
                                             {/* 未来预约可取消 */}
                                             {a.status === "booked" && !isPast(a.slot.date) && (
-                                                <button
-                                                    className="delete-btn"
-                                                    onClick={() => cancelAppointment(a.id)}
-                                                >
-                                                    Cancel
-                                                </button>
+                                                <>
+                                                    <button
+                                                        className="edit-btn"
+                                                        onClick={() => navigate(`/booking?edit=${a.id}`)}
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        className="delete-btn"
+                                                        onClick={() => cancelAppointment(a.id)}
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                </>
                                             )}
                                         </td>
                                     </tr>

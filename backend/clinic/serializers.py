@@ -112,6 +112,22 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
         return Appointment.objects.create(**validated_data)
 
+    def update(self, instance, validated_data):
+        new_slot = validated_data.get("slot", instance.slot)
+
+        if new_slot != instance.slot:
+            old_slot = instance.slot
+            old_slot.is_booked = False
+            old_slot.save()
+
+            new_slot.is_booked = True
+            new_slot.save()
+
+            instance.slot = new_slot
+
+        instance.save()
+        return instance
+
 
 
 class RegisterSerializer(serializers.ModelSerializer):

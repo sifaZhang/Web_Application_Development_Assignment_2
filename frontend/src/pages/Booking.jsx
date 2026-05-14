@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import patientAxios from "../api/patientAxios";
+
+const [searchParams] = useSearchParams();
+const editId = searchParams.get("edit"); 
+
 import "./PatientDashboard.css";
 
 export default function BookAppointment() {
@@ -55,19 +59,30 @@ export default function BookAppointment() {
 
     // 预约 slot
     const bookSlot = async (slotId) => {
-        if (!window.confirm("Confirm booking this appointment")) return;
+        const msg = editId ? "Confirm reschedule?" : "Confirm booking?";
+        if (!window.confirm(msg)) return;
 
         try {
-            await patientAxios.post(
-                "/appointments/",
-                { slot_id: slotId },
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-
-            alert("Appointment booked!");
+            if (editId) {
+                // 编辑模式：更新预约
+                await patientAxios.patch(
+                    `/appointments/${editId}/`,
+                    { slot_id: slotId },
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+                alert("Appointment updated!");
+            } else {
+                // 新建模式
+                await patientAxios.post(
+                    "/appointments/",
+                    { slot_id: slotId },
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+                alert("Appointment booked!");
+            }
             navigate("/patient-dashboard");
         } catch (err) {
-            alert("Failed to book appointment");
+            alert("Failed");
         }
     };
 
