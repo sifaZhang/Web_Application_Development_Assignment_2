@@ -1,3 +1,4 @@
+# clinic/views.py
 from django.contrib.auth import authenticate
 from rest_framework import viewsets, permissions, generics
 from rest_framework.decorators import action
@@ -5,6 +6,10 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+from rest_framework.response import Response
+from rest_framework import status
+from .models import PatientProfile
 
 from .models import DoctorProfile, AppointmentSlot, Appointment
 from .serializers import (
@@ -28,7 +33,7 @@ class DoctorViewSet(viewsets.ModelViewSet):
 class DoctorListView(generics.ListAPIView):
     queryset = DoctorProfile.objects.all()
     serializer_class = DoctorSerializer
-
+    permission_classes = [permissions.AllowAny]
 
 # 权限：病人只能操作自己的预约
 class IsOwnerOrAdmin(permissions.BasePermission):
@@ -81,16 +86,18 @@ class AppointmentViewSet(viewsets.ModelViewSet):
     serializer_class = AppointmentSerializer
 
     def get_permissions(self):
-        # 管理员可以查看所有预约
         if self.action in ["list", "retrieve"]:
             return [permissions.IsAdminUser()]
-        # 病人创建预约
+
         if self.action == "create":
             return [permissions.IsAuthenticated()]
-        # 病人查看自己的预约
+
         if self.action == "my":
             return [permissions.IsAuthenticated()]
-        # 病人或管理员可以修改/取消预约
+
+        if self.action == "cancel":
+            return [IsOwnerOrAdmin()]
+
         if self.action in ["update", "partial_update", "destroy"]:
             return [IsOwnerOrAdmin()]
 
@@ -127,13 +134,6 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
         return Response({"detail": "The appointment has cancelled successful"})
 
-
-# clinic/views.py
-from django.contrib.auth.models import User
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework import status
-from .models import PatientProfile
 
 class RegisterView(generics.CreateAPIView):
     def post(self, request):
