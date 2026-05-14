@@ -20,7 +20,7 @@ export default function AdminDoctors() {
 
     const fetchDoctors = async () => {
         try {
-            const response = await adminAxios.get("/admin/doctors/");
+            const response = await adminAxios.get("/manage/doctors/");
             setDoctors(response.data);
         } catch (error) {
             console.log("Error fetching doctors:", error);
@@ -35,7 +35,7 @@ export default function AdminDoctors() {
         e.preventDefault();
 
         try {
-            await adminAxios.post("/admin/doctors/", form);
+            await adminAxios.post("/manage/doctors/", form);
 
             alert("Doctor added!");
 
@@ -58,7 +58,7 @@ export default function AdminDoctors() {
         if (!window.confirm("Are you sure you want to delete this doctor")) return;
 
         try {
-            await adminAxios.delete(`/admin/doctors/${id}/`);
+            await adminAxios.delete(`/manage/doctors/${id}/`);
             fetchDoctors();
         } catch (error) {
             console.log("Error deleting doctor:", error);
@@ -74,7 +74,7 @@ export default function AdminDoctors() {
     // 保存编辑
     const handleSaveEdit = async () => {
         try {
-            await adminAxios.put(`/admin/doctors/${editingDoctor.id}/`, editingDoctor);
+            await adminAxios.put(`/manage/doctors/${editingDoctor.id}/`, editingDoctor);
             //alert("Doctor updated!");
             setEditingDoctor(null);
             fetchDoctors();

@@ -6,7 +6,7 @@ from clinic.views import DoctorViewSet, AppointmentSlotViewSet, AppointmentViewS
     PatientViewSet, AppointmentSlotBulkSave, RegisterView
 
 router = DefaultRouter()
-router.register(r"admin/doctors", DoctorViewSet, basename="admin-doctors")
+router.register(r"manage/doctors", DoctorViewSet, basename="admin-doctors")
 router.register(r"slots", AppointmentSlotViewSet)
 router.register(r"appointments", AppointmentViewSet)
 router.register(r"patients", PatientViewSet, basename="patients")
@@ -20,5 +20,5 @@ urlpatterns = [
     path("auth/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 
-    path("admin/slots/bulk_save/", AppointmentSlotBulkSave.as_view()),
+    path("manage/slots/bulk_save/", AppointmentSlotBulkSave.as_view()),
 ]

@@ -21,7 +21,7 @@ export default function AdminAppointments() {
     // Load doctors for filter dropdown
     const loadDoctors = async () => {
         try {
-            const res = await adminAxios.get("/admin/doctors/", {
+            const res = await adminAxios.get("/manage/doctors/", {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setDoctors(res.data);

@@ -43,7 +43,7 @@ export default function AdminSlots() {
     useEffect(() => {
         const token = localStorage.getItem("admin_access");
 
-        adminAxios.get("/admin/doctors/", {
+        adminAxios.get("/manage/doctors/", {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(res => setDoctors(res.data))
@@ -132,7 +132,7 @@ export default function AdminSlots() {
         ];
 
         try {
-            await adminAxios.post("/admin/slots/bulk_save/", {
+            await adminAxios.post("/manage/slots/bulk_save/", {
                 doctor_id: selectedDoctor,
                 date: selectedDate,
                 slots: selectedTimes,
