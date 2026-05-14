@@ -24,6 +24,8 @@ export default function PatientLogin() {
 
             localStorage.setItem("access", response.data.access);
             localStorage.setItem("refresh", response.data.refresh);
+            localStorage.setItem("user_id", response.data.id);
+            localStorage.setItem("username", response.data.username);
 
             navigate("/patient-dashboard");
 

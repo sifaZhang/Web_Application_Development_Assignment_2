@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django_filters.rest_framework import DjangoFilterBackend
+from django.shortcuts import get_object_or_404
 
 from .models import DoctorProfile, AppointmentSlot, Appointment
 from .serializers import (
@@ -180,6 +181,7 @@ class LoginView(generics.GenericAPIView):
         return Response({
             "access": str(refresh.access_token),
             "refresh": str(refresh),
+            "id": user.id,
             "username": user.username,
             "is_staff": user.is_staff,
             "email": user.email,
@@ -201,3 +203,8 @@ class PatientViewSet(viewsets.ModelViewSet):
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    @action(detail=False, methods=["get"], url_path="by_user/(?P<user_id>[^/.]+)")
+    def by_user(self, request, user_id=None):
+        patient = get_object_or_404(PatientProfile, user__id=user_id)
+        serializer = self.get_serializer(patient)
+        return Response(serializer.data)
