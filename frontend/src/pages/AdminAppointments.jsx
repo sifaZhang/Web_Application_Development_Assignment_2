@@ -51,15 +51,13 @@ export default function AdminAppointments() {
         loadAppointments();
     }, []);
 
-    const deleteAppointment = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this appointment")) return;
+    const cancelAppointment = async (id) => {
+        if (!window.confirm("Are you sure you want to cancel this appointment?")) return;
         try {
-            await adminAxios.delete(`/appointments/${id}/`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await adminAxios.post(`/appointments/${id}/cancel/`);
             loadAppointments();
         } catch (err) {
-            alert("Failed to delete appointment");
+            alert("Failed to cancel appointment");
         }
     };
 
@@ -183,23 +181,27 @@ export default function AdminAppointments() {
                                         <td>{a.slot.time.slice(0, 5)}</td>
                                         <td>{a.status}</td>
                                         <td>
-                                            <button
-                                                className="edit-btn"
-                                                onClick={() => {
-                                                    setEditingId(a.id);
-                                                    setEditDoctor("");
-                                                    setEditDate("");
-                                                    setEditSlots([]);
-                                                }}
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                className="delete-btn"
-                                                onClick={() => deleteAppointment(a.id)}
-                                            >
-                                                Delete
-                                            </button>
+                                            {a.status !== "cancelled" && (
+                                                <button
+                                                    className="edit-btn"
+                                                    onClick={() => {
+                                                        setEditingId(a.id);
+                                                        setEditDoctor("");
+                                                        setEditDate("");
+                                                        setEditSlots([]);
+                                                    }}
+                                                >
+                                                    Edit
+                                                </button>
+                                            )}
+                                            {a.status !== "cancelled" && (
+                                                <button
+                                                    className="delete-btn"
+                                                    onClick={() => cancelAppointment(a.id)}
+                                                >
+                                                    Cancle
+                                                </button>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}

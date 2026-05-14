@@ -182,7 +182,7 @@ export default function PatientDashboard() {
                                                         className="delete-btn"
                                                         onClick={() => cancelAppointment(a.id)}
                                                     >
-                                                        Cancel
+                                                        Cancle
                                                     </button>
                                                 </>
                                             )}
